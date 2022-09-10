@@ -33,9 +33,9 @@ const upload = multer({
 
 });
 
-router.get('/', (req, res) => {
-  res.send('default response achieved')
-})
+// router.get('/', (req, res) => {
+//   res.send('default response achieved')
+// })
 
 router.post('/upload', upload.single('picture'), (req, res) => {
   const filename = req?.file.filename;

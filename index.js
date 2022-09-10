@@ -1,7 +1,6 @@
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
-// const path = require('path');
 const router = require('./router');
 const app = express();
 
@@ -18,11 +17,9 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 200
 };
-
 app.use(cors(corsOptions));
 
-app.use(router)
-// app.use('/', require(path.join(__dirname, 'router')));
+app.use(router);
 
 app.use((req, res, next) => {
   const err = new Error(`${req.method} ${req.url} Not Found`);

@@ -1,8 +1,13 @@
 const express = require('express');
 const logger = require('morgan');
-const cors = require('cors');
+const result = require('dotenv').config();
 const router = require('./router');
 const app = express();
+
+if (result.error) {
+  throw result.error
+}
+console.log('env variables loaded:', result.parsed);
 
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -13,11 +18,6 @@ app.set('env', NODE_ENV);
 app.use(logger('tiny'));
 
 app.use(express.json());
-const corsOptions = {
-  credentials: true,
-  optionsSuccessStatus: 200
-};
-app.use(cors(corsOptions));
 
 app.use(router);
 

@@ -1,6 +1,20 @@
+const {format} = require('util')
 const express = require('express')
 const multer = require('multer')
+const cors = require('cors')
+const path = require('path')
+
 const router = express.Router();
+
+const serviceKey = path.join(__dirname, './config/keys.json');
+const {Storage} = require('@google-cloud/storage');
+const e = require('express');
+const GCLOUD_STORAGE_BUCKET = process.env.GOOGLE_CLOUD_PROJECT;
+const gStorage = new Storage({
+  keyFilename: serviceKey,
+  projectId: process.env.GOOGLE_CLOUD_PROJECT
+});
+const bucket = gStorage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -15,7 +29,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: {
     fileSize: 10000000,
   },
@@ -33,17 +47,27 @@ const upload = multer({
 
 });
 
-// router.get('/', (req, res) => {
-//   res.send('default response achieved')
-// })
+router.post('/upload', cors(), upload.single('picture'), (req, res, next) => {
+  if (!req.file) {
+    res.status(400).send('No file uploaded');
+    return
+  }
 
-router.post('/upload', upload.single('picture'), (req, res) => {
-  const filename = req?.file.filename;
-  res.status(200).send(req.headers.host + '/images/' + filename);
+  const blob = bucket.file(req.file.originalname);
+  const blobStream = blob.createWriteStream();
+
+  blobStream.on('error', err => {
+    next(err)
+  });
+
+  blobStream.on('finish', () => {
+    const publicUrl = format(
+      `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+    );
+    res.status(200).send(publicUrl);
+  });
+
+  blobStream.end(req.file.buffer)
 });
-
-// router.get('/images/:image', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'images', req.params.image));
-// });
 
 module.exports = router;

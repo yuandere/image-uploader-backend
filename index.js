@@ -1,13 +1,7 @@
 const express = require('express');
 const logger = require('morgan');
-const result = require('dotenv').config();
 const router = require('./router');
 const app = express();
-
-if (result.error) {
-  throw result.error
-}
-console.log('env variables loaded:', result.parsed);
 
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';

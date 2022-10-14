@@ -6,7 +6,7 @@
       Frontend
     </a>
     <span> | </span>
-    <a href="https://github.com/yuandere">
+    <a href="https://taupe-belekoy-a72796.netlify.app/">
       Demo
     </a>
   </h3>

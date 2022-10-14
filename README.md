@@ -2,36 +2,23 @@
 
 <div align="center">
   <h3>
-    <a href="https://github.com/yuandere">
-      Front end
+    <a href="https://github.com/yuandere/image-uploader">
+      Frontend
     </a>
     <span> | </span>
     <a href="https://github.com/yuandere">
-      Challenge
+      Demo
     </a>
   </h3>
 </div>
 
 ## Overview
 
-![screenshot](https://user-images.githubusercontent.com/16707738/92399059-5716eb00-f132-11ea-8b14-bcacdc8ec97b.png)
+This is the backend component for my project found [here](https://github.com/yuandere/image-uploader). It uses Multer to send images received from the frontend to a storage bucket on Google Cloud Platform.
 
-Introduce your projects by taking a screenshot or a gif. Try to tell visitors a story about your project by answering:
+Built with:
 
-- Where can I see your demo?
-- What was your experience?
-- What have you learned/improved?
-- Your wisdom? :)
-
-### Built With
-
-<!-- This section should list any major frameworks that you built your project using. Here are a few examples.-->
-
-- [React](https://reactjs.org/)
-- [Tailwind](https://tailwindcss.com/)
-
-## Features
-
-<!-- List the features of your application or follow the template. Don't share the figma file here :) -->
-
-This application/site was created as a submission to a [DevChallenges](https://devchallenges.io/challenges) challenge. The [challenge](https://devchallenges.io/challenges/O2iGT9yBd6xZBrOcVirx) was to build an application to complete the given user stories.
+![javascript](https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=for-the-badge&logo=JavaScript&logoColor=black)
+![express](https://img.shields.io/badge/Express-000000.svg?style=for-the-badge&logo=Express&logoColor=white)
+![nodeJS](https://img.shields.io/badge/Node.js-339933.svg?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![google cloud platform](https://img.shields.io/badge/Google%20Cloud-4285F4.svg?style=for-the-badge&logo=Google-Cloud&logoColor=white)

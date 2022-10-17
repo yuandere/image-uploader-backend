@@ -1,10 +1,1 @@
-{
-  "type": "service_account",
-  "project_id": "image-uploader-store-362200",
-  "client_email": "image-uploader-store-362200@appspot.gserviceaccount.com",
-  "client_id": "100681662553362615852",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/image-uploader-store-362200%40appspot.gserviceaccount.com"
-}
+{"type":"service_account","project_id":"image-uploader-store-362200","client_email":"image-uploader-store-362200@appspot.gserviceaccount.com","client_id":"100681662553362615852","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_x509_cert_url":"https://www.googleapis.com/robot/v1/metadata/x509/image-uploader-store-362200%40appspot.gserviceaccount.com"}

@@ -3,12 +3,15 @@ const express = require('express')
 const multer = require('multer')
 const cors = require('cors')
 const path = require('path')
+const fs = require('fs')
 
 const router = express.Router();
 
-// const serviceKeyCut = path.join(__dirname, './config/keys.json');
-const serviceKeyCut = require('./config/keys.json')
-const serviceKey = { ...serviceKeyCut, ...process.env.private_key_id, ...process.env.private_key};
+const serviceKey = path.join(__dirname, './config/keys2.json');
+const serviceKeyCut = require('./config/keys.json');
+const serviceKeyJoined = { ...serviceKeyCut, ...process.env.private_key_id, ...process.env.private_key};
+console.log('this should work', serviceKeyJoined);
+fs.writeFileSync(serviceKey, serviceKeyJoined);
 
 const {Storage} = require('@google-cloud/storage');
 const e = require('express');

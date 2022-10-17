@@ -9,12 +9,9 @@ const router = express.Router();
 
 const serviceKey = path.join(__dirname, './config/keys2.json');
 const serviceKeyCut = require('./config/keys.json');
-console.log(serviceKeyCut)
-console.log(process.env.private_key, process.env.private_key_id)
-const serviceKeyJoined = { ...serviceKeyCut, ...process.env.private_key_id, ...process.env.private_key};
-// console.log('hope this works', serviceKeyJoined);
+const serviceKeyJoined = { ...serviceKeyCut, "private_key_id": process.env.private_key_id, "private_key": process.env.private_key};
+console.log(serviceKeyJoined);
 fs.writeFileSync(serviceKey, serviceKeyJoined);
-console.log(serviceKey)
 
 const {Storage} = require('@google-cloud/storage');
 const e = require('express');

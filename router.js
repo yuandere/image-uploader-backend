@@ -6,10 +6,12 @@ const path = require('path')
 
 const router = express.Router();
 
-const serviceKey = path.join(__dirname, './config/keys.json');
+// const serviceKeyCut = path.join(__dirname, './config/keys.json');
+const serviceKeyCut = require('./config/keys.json')
+const serviceKey = { ...serviceKeyCut, ...process.env.private_key_id, ...process.env.private_key};
+
 const {Storage} = require('@google-cloud/storage');
 const e = require('express');
-const GCLOUD_STORAGE_BUCKET = process.env.GOOGLE_CLOUD_PROJECT;
 const gStorage = new Storage({
   keyFilename: serviceKey,
   projectId: process.env.GOOGLE_CLOUD_PROJECT

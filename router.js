@@ -42,7 +42,8 @@ const upload = multer({
     if (
       !file.originalname.endsWith('.jpg') &&
       !file.originalname.endsWith('.jpeg') &&
-      !file.originalname.endsWith('.png')
+      !file.originalname.endsWith('.png') &&
+      !file.originalname.endsWith('.gif')
     ) {
       return cb(new Error('Please upload a valid image!'));
     }

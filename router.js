@@ -1,31 +1,32 @@
-const {format} = require('util')
+const { format } = require('util')
 const express = require('express')
 const multer = require('multer')
 const cors = require('cors')
 const path = require('path')
 const fs = require('fs')
+const { Storage } = require('@google-cloud/storage')
+const bucket = gStorage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
 
 const router = express.Router();
 
 const serviceKey = path.join(__dirname, './config/keys2.json');
 const serviceKeyCut = require('./config/keys.json');
-const serviceKeyJoined = { ...serviceKeyCut, "private_key_id": process.env.private_key_id, "private_key": process.env.private_key};
+const serviceKeyJoined = {
+  ...serviceKeyCut, "private_key_id": process.env.private_key_id, "private_key": process.env.private_key
+};
 fs.writeFileSync(serviceKey, JSON.stringify(serviceKeyJoined));
 
-const {Storage} = require('@google-cloud/storage');
-const e = require('express');
 const gStorage = new Storage({
   keyFilename: serviceKey,
   projectId: process.env.GOOGLE_CLOUD_PROJECT
 });
-const bucket = gStorage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, __dirname + '/images')
   },
   filename: function (req, file, cb) {
-    const fileName = file.originalname.replaceAll(' ','');
+    const fileName = file.originalname.replaceAll(' ', '');
     const fileShort = fileName.slice(0, fileName.indexOf('.'));
     const fileType = fileName.substring(fileName.indexOf('.'));
     cb(null, fileShort + '-' + Date.now() + fileType)
@@ -33,6 +34,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({
+  diskStorage: storage,
   storage: multer.memoryStorage(),
   limits: {
     fileSize: 10000000,

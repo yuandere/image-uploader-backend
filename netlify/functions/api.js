@@ -13,7 +13,8 @@ const router = express.Router();
 api.use(cors());
 
 router.get("/hello", (req, res) => res.send("Hello World!"));
-
+console.log('dirname', __dirname);
+console.log('aws path env', process.env.LD_LIBRARY_PATH);
 const serviceKey = path.join(__dirname, '../../../../../config/keys2.json');
 const serviceKeyCut = require('../../config/keys.json');
 const serviceKeyJoined = {

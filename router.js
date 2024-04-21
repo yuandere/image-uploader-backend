@@ -5,7 +5,6 @@ const cors = require('cors')
 const path = require('path')
 const fs = require('fs')
 const { Storage } = require('@google-cloud/storage')
-const bucket = gStorage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
 
 const router = express.Router();
 
@@ -20,6 +19,7 @@ const gStorage = new Storage({
   keyFilename: serviceKey,
   projectId: process.env.GOOGLE_CLOUD_PROJECT
 });
+const bucket = gStorage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -76,5 +76,3 @@ router.post('/upload', cors(), upload.single('picture'), (req, res, next) => {
 
   blobStream.end(req.file.buffer)
 });
-
-module.exports = router;

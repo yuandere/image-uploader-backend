@@ -1,0 +1,89 @@
+import { format } from 'util'
+import express from "express";
+import serverless from "serverless-http";
+import multer from 'multer';
+import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
+import { Storage } from '@google-cloud/storage';
+
+const api = express();
+const router = express.Router();
+
+api.use(cors());
+
+router.get("/hello", (req, res) => res.send("Hello World!"));
+console.log('dirname', __dirname);
+console.log('aws path env', process.env.LD_LIBRARY_PATH);
+const serviceKey = path.join(__dirname, '../../../../../config/keys2.json');
+const serviceKeyCut = require('../../config/keys.json');
+const serviceKeyJoined = {
+  ...serviceKeyCut, "private_key_id": process.env.private_key_id, "private_key": process.env.private_key
+};
+fs.writeFileSync(serviceKey, JSON.stringify(serviceKeyJoined));
+
+const gStorage = new Storage({
+  keyFilename: serviceKey,
+  projectId: process.env.GOOGLE_CLOUD_PROJECT
+});
+const bucket = gStorage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, __dirname + '/images')
+  },
+  filename: function (req, file, cb) {
+    const fileName = file.originalname.replaceAll(' ', '');
+    const fileShort = fileName.slice(0, fileName.indexOf('.'));
+    const fileType = fileName.substring(fileName.indexOf('.'));
+    cb(null, fileShort + '-' + Date.now() + fileType)
+  }
+});
+
+const upload = multer({
+  diskStorage: storage,
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10000000,
+  },
+
+  fileFilter(res, file, cb) {
+    if (
+      !file.originalname.endsWith('.jpg') &&
+      !file.originalname.endsWith('.jpeg') &&
+      !file.originalname.endsWith('.png') &&
+      !file.originalname.endsWith('.gif')
+    ) {
+      return cb(new Error('Please upload a valid image!'));
+    }
+    cb(undefined, true);
+  },
+
+});
+
+router.post('/upload', cors(), upload.single('picture'), (req, res, next) => {
+  if (!req.file) {
+    res.status(400).send('No file uploaded');
+    return
+  }
+
+  const blob = bucket.file(req.file.originalname);
+  const blobStream = blob.createWriteStream();
+
+  blobStream.on('error', err => {
+    next(err)
+  });
+
+  blobStream.on('finish', () => {
+    const publicUrl = format(
+      `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+    );
+    res.status(200).send(publicUrl);
+  });
+
+  blobStream.end(req.file.buffer)
+});
+
+api.use("/api/", router);
+
+export const handler = serverless(api);
